@@ -12,7 +12,7 @@ const Router = express.Router();
 
 
 /*
-Route     /signup
+Route     /auth/signup
 Desc      Register new user
 Params    none
 Access    public
@@ -20,30 +20,40 @@ Access    public
 
 Router.post("/signup", async(req, res) =>{
     try{
-        const{email, password, fullName, phoneNumber} = req.body.credential;
-        const checkUserByEmail = await UserModel.findOne({email})
-        const checkUserByPhone = await UserModel.findOne({phoneNumber})
+        
+        await UserModel.findByEmailAndPhone(req.body.credentials);
 
-        // chech whether email exists
-        if(checkUserByEmail || checkUserByPhone)
-        {
-            return res.json({email: "User already exists!"});
-        }
-
-        //hash password
-        const bcryptSalt = await bcrypt.genSalt(8);
-        const hashedPassword = await bcrypt.hash(password,bcryptSalt);
+        
 
         //save to db
-        await UserModel.create({
-            ...req.body.credentials, 
-            password:hashedPassword});
+        const newUser = await UserModel.create(req.body.credentials);
         
-        //generate JWT auth token
-        const token = jwt.sign({user:{fullName, email}}, "ZomatoApp");
+        const token = newUser.generateJwtToken();
+
         return res.status(200).json({token,status:"success"});
 
     } catch(error){
         return res.status(500).json({error:error.message});
     }
 });
+
+
+/*
+Route     /auth/signin
+Desc      Signin with email and password
+Params    none
+Access    public
+*/
+Router.post('/signin', async (req,res) => {
+    try{
+        const user = await UserModel.findByEmailAndPassword(req.body.credentials);
+
+        const token = user.generateJwtToken();
+        return res.status(200).json({token,status:"success"});
+    }
+    catch(error){
+        return res.status(500).json({error:error.message})
+    }
+})
+
+export default Router;
