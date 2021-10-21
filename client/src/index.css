@@ -10,3 +10,7 @@ body {
     sans-serif;
 }
 
+.leaflet-container {
+  width: inherit;
+  height: inherit;
+}
