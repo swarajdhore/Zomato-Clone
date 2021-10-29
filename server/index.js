@@ -17,6 +17,7 @@ import Image from "./API/Image/index";
 import Order from "./API/Orders/index";
 import Review from "./API/Reviews/index";
 import User from "./API/User/index";
+import MailService from "./API/Mail/index";
 
 //Database connection
 import ConnectDB from "./database/connection";
@@ -49,14 +50,13 @@ zomato.use("/image", Image);
 zomato.use("/order", Order);
 zomato.use("/review", Review);
 zomato.use("/user", User);
+zomato.use("/mail", MailService);
 
 zomato.listen(4000, () =>
     ConnectDB()
-        .then(() => console.log("Server is up and running"))
-        .catch((error) => {
-            console.log(error);
-            console.log(
-                "Server is running, but database connection failed ..."
-            );
-        })
+    .then(() => console.log("Server is up and running"))
+    .catch((error) => {
+    console.log(error);
+    console.log("Server is running, but database connection failed ...");
+    })
 );
