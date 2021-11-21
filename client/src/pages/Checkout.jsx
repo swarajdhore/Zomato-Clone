@@ -53,7 +53,7 @@ function Checkout() {
               5/76, West Ajmal Khan, Padam Singh, Karol Bagh, New Delhi
             </small>
           </div>
-          <div className="my-4 h-32 px-4 h-full flex flex-col gap-2 w-full md:w-3/5">
+          <div className="my-4 px-4 h-full flex flex-col gap-2 w-full md:w-3/5">
             {foods.map((food) => (
               <FoodItem {...food} key={food._id} />
             ))}
@@ -63,7 +63,7 @@ function Checkout() {
             <AddressList address={address} />
           </div>
         </div>
-        <button className="flex items-center gap-2 justify-center my-4 md:my-8 w-full px-4 md:w-4/5 px-0 h-14 text-white font-medium text-lg bg-zomato-400 rounded-lg">
+        <button className="flex items-center gap-2 justify-center my-4 md:my-8 w-full md:w-4/5 px-0 h-14 text-white font-medium text-lg bg-zomato-400 rounded-lg">
           Pay Securely <BsShieldLockFill />
         </button>
       </div>
