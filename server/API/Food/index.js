@@ -5,9 +5,26 @@ import express from "express";
 import { FoodModel } from "../../database/allModels";
 
 //validation
-import {ValidateRestaurantId, Validatecategory} from '../../validation/food'
+import { ValidateRestaurantId, Validatecategory } from "../../validation/food";
 
 const Router = express.Router();
+
+/*
+Route           /food/:_id
+Des             Get specific food
+Params          _id
+Access          Public
+Method          GET
+*/
+Router.get("/:_id", async (req, res) => {
+    try {
+      const { _id } = req.params;
+      const foods = await FoodModel.findById(_id);
+      return res.json({ foods });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  });
 
 /*
 Route           /food/r/:_id
@@ -18,15 +35,15 @@ Method          GET
 */
 Router.get("/r/:_id", async (req, res) => {
     try {
-        await ValidateRestaurantId(req.params);
-        const { _id } = req.params;
+    await ValidateRestaurantId(req.params);
+    const { _id } = req.params;
 
-        const foods = await FoodModel.find({ restaurant: _id });
+    const foods = await FoodModel.find({ restaurant: _id });
 
-        return res.json({ foods });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
+    return res.json({ foods });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 /*
@@ -40,14 +57,14 @@ Router.get("/c/:category", async (req, res) => {
     try {
         await Validatecategory(req.params);
         const { category } = req.params;
-
+    
         const foods = await FoodModel.find({
-            category: { $regex: category, $options: "i" },
+          category: { $regex: category, $options: "i" },
         });
-
+    
         return res.json({ foods });
-    } catch (error) {
+      } catch (error) {
         return res.status(500).json({ error: error.message });
-    }
+      }
 });
 export default Router;
