@@ -13,12 +13,15 @@ if (process.env.NODE_ENV === "development") {
 }
 
 const store = createStore(
-  rootReducer,
-  {},
-  compose(
-    applyMiddleware(...middleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
+  // rootReducer,
+  // {},
+  // compose(
+  //   applyMiddleware(...middleware),
+  //   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  // )
+  rootReducer,{},
+   compose(
+     applyMiddleware(...middleware), window?.__REDUX_DEVTOOLS_EXTENSION__?.())
 );
 
 // compose
